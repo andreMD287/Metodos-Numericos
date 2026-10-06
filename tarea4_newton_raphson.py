@@ -57,7 +57,8 @@ def newton_raphson(f, df, x0, eps, M):
 
     revisar_derivada(f, df, x0)
 
-    print(f"{'n':>3} {'x_n':>18} {'f(x_n)':>15} {"f'(x_n)":>15} {'x_(n+1)':>18} {'|x_(n+1)-x_n|':>15}")
+    dfx_enc = "f'(x_n)"
+    print(f"{'n':>3} {'x_n':>18} {'f(x_n)':>15} {dfx_enc:>15} {'x_(n+1)':>18} {'|x_(n+1)-x_n|':>15}")
 
     x_n = x0
     for n in range(1, int(M) + 1):   # n = 1, 2, ..., M
