@@ -1,5 +1,5 @@
 """
-Tarea 8 - Algoritmo hacia atrás (sustitución regresiva)
+Tarea 6 - Algoritmo hacia atrás (sustitución regresiva)
 
 Entrada:
     n : tamaño de la matriz
