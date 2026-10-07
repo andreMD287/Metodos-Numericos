@@ -33,7 +33,7 @@ from fractions import Fraction
 
 def a_exacto(v):
     """Convierte enteros a Fraction (divisiones exactas); deja floats y Fractions igual."""
-    if isinstance(v, int) and not isinstance(v, bool):
+    if isinstance(v, numbers.Integral) and not isinstance(v, bool):
         return Fraction(v)
     return v
 
