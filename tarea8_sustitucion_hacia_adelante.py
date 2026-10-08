@@ -33,6 +33,14 @@ def a_exacto(v):
     return v
 
 
+def es_finito(v):
+    """True si el número real v no es inf ni nan (un entero enorme cuenta como finito)."""
+    try:
+        return math.isfinite(v)
+    except OverflowError:
+        return True
+
+
 def fmt(v):
     """Muestra floats con 10 cifras significativas y negativos entre paréntesis."""
     t = f"{v:.10g}" if isinstance(v, float) else str(v)
@@ -49,7 +57,7 @@ def validar_entrada(A, b):
     if len(b) != n:
         return f"b debe tener {n} componentes."
     for dato in [v for fila in A for v in fila] + list(b):
-        if isinstance(dato, bool) or not isinstance(dato, numbers.Real) or not math.isfinite(dato):
+        if isinstance(dato, bool) or not isinstance(dato, numbers.Real) or not es_finito(dato):
             return f"A y b solo pueden tener números reales finitos (se encontró {dato!r})."
     for i in range(n):
         for j in range(i + 1, n):

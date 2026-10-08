@@ -38,6 +38,14 @@ def a_exacto(v):
     return v
 
 
+def es_finito(v):
+    """True si el número real v no es inf ni nan (un entero enorme cuenta como finito)."""
+    try:
+        return math.isfinite(v)
+    except OverflowError:
+        return True
+
+
 def texto(v):
     """Muestra floats con 10 cifras significativas y el resto con str()."""
     return f"{v:.10g}" if isinstance(v, float) else str(v)
@@ -62,7 +70,7 @@ def validar_matriz_cuadrada(A):
         return f"A debe ser una matriz cuadrada de {n} x {n}."
     for fila in A:
         for v in fila:
-            if isinstance(v, bool) or not isinstance(v, numbers.Real) or not math.isfinite(v):
+            if isinstance(v, bool) or not isinstance(v, numbers.Real) or not es_finito(v):
                 return f"A solo puede tener números reales finitos (se encontró {v!r})."
     return None
 
