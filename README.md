@@ -24,6 +24,8 @@ python tarea7_lu.py
 python tarea8_sustitucion_hacia_adelante.py
 python tarea9_sistemas_lu.py
 python tarea10_lup.py
+python tarea11_gauss_seidel.py
+python tarea12_sumas_inferiores_superiores.py
 ```
 
 Si en Windows los acentos o símbolos (≈, ´) salen mal en la consola, use:
@@ -46,6 +48,8 @@ python -X utf8 tarea1_biseccion.py
 | 8 | `tarea8_sustitucion_hacia_adelante.py` | `sustitucion_hacia_adelante(A, b)` | - |
 | 9 | `tarea9_sistemas_lu.py` | `solucion_sistemas_lu(A, b)` | tareas 6, 7 y 8 |
 | 10 | `tarea10_lup.py` | `lup(A, b)` | tareas 7 y 9 (y por tanto 6 y 8) |
+| 11 | `tarea11_gauss_seidel.py` | `gauss_seidel(A, b, x0, eps, M)` | tarea 7 |
+| 12 | `tarea12_sumas_inferiores_superiores.py` | `sumas_inferior_superior(f, a, b, n)` | - |
 
 Parámetros comunes: `f`, `g`, `df` son funciones de Python, `eps` es la tolerancia, `M` es el
 número máximo de iteraciones. Todas las funciones imprimen el procedimiento paso a paso y
@@ -135,12 +139,46 @@ if resultado is not None:
 Funciona también cuando `a_11 = 0`, donde la tarea 9 falla. Imprime P, L, U, la
 verificación `P A = L U` y la solución.
 
+### Tarea 11: Gauss-Seidel
+
+```python
+from tarea11_gauss_seidel import gauss_seidel
+
+A = [[10, -1, 2, 0],
+     [-1, 11, -1, 3],
+     [2, -1, 10, -1],
+     [0, 3, -1, 8]]
+b = [6, 25, -11, 15]
+
+x = gauss_seidel(A, b, x0=[0, 0, 0, 0], eps=1e-8, M=100)   # solución exacta (1, 2, -1, 1)
+```
+
+Se detiene cuando `||X - X0|| <= eps` (norma del máximo). Si no converge en `M` iteraciones,
+si hay un `a_ii = 0` o si los valores divergen, imprime el mensaje de fracaso y devuelve `None`.
+La convergencia está garantizada, por ejemplo, si `A` es diagonalmente dominante.
+
+Gauss-Seidel usa los valores ya actualizados de la misma iteración. La fórmula del
+cuaderno se lee con `X_j^0` para todos los `j`, lo que corresponde al método de Jacobi;
+para obtener esa versión use `gauss_seidel(..., usar_valores_anteriores=True)`.
+
+### Tarea 12: sumas inferiores y superiores
+
+```python
+from tarea12_sumas_inferiores_superiores import sumas_inferior_superior
+
+L, U = sumas_inferior_superior(lambda x: x**2, 1, 5, 8)   # L = 35.5, U = 47.5
+```
+
+Calcula `L` y `U` con `n` particiones del intervalo `[a, b]` (se requiere `a < b`). El
+mínimo y el máximo de cada subintervalo se toman entre sus dos extremos, así que
+`L <= integral <= U` se cumple cuando `f` es monótona en cada subintervalo; si no, aumente `n`.
+
 ## Notas
 
 - **Entradas válidas:** matrices como listas de listas (o tuplas) de números reales finitos:
   enteros, decimales o `Fraction`. Una entrada inválida (matriz no cuadrada, vector `b` de
   tamaño incorrecto, texto, `nan`, etc.) imprime un mensaje y devuelve `None`.
-- **Salida reducida:** en las tareas 7, 9 y 10 use `mostrar=False` para no imprimir el
+- **Salida reducida:** en las tareas 7, 9, 10, 11 y 12 use `mostrar=False` para no imprimir el
   procedimiento, útil con matrices grandes. Por ejemplo `lup(A, b, mostrar=False)`.
 - **Enteros y fracciones:** en las tareas 7, 8, 9 y 10 los enteros se convierten a
   `Fraction`, por lo que los resultados son exactos. Si se usan decimales (`float`) los
