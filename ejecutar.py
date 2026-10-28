@@ -33,6 +33,7 @@ from tarea9_sistemas_lu import solucion_sistemas_lu
 from tarea10_lup import lup
 from tarea11_gauss_seidel import gauss_seidel
 from tarea12_sumas_inferiores_superiores import sumas_inferior_superior
+from tarea14_simpson_compuesto import simpson_compuesto
 
 # Nombres permitidos al interpretar lo que se escribe (funciones y constantes de math)
 NOMBRES = {k: getattr(math, k) for k in dir(math) if not k.startswith("_")}
@@ -297,6 +298,14 @@ def tarea12():
     return sumas_inferior_superior(f, a, b, n, mostrar=n <= 50)
 
 
+def tarea14():
+    f = leer_funcion("f")
+    a, b = leer_numero("a"), leer_numero("b")
+    M = leer_entero("M (el número de subintervalos es n = 2M)")
+    print()
+    return simpson_compuesto(f, a, b, M, mostrar=M <= 25)
+
+
 TAREAS = {
     1: ("Bisección", tarea1),
     2: ("Punto fijo", tarea2),
@@ -310,6 +319,7 @@ TAREAS = {
     10: ("Método LUP", tarea10),
     11: ("Gauss-Seidel", tarea11),
     12: ("Sumas inferiores y superiores", tarea12),
+    14: ("Regla de Simpson compuesta", tarea14),
 }
 
 
@@ -322,6 +332,10 @@ def ejecutar_tarea(numero):
         raise
     except Exception as err:                        # un fallo no debe cerrar el programa
         print(f"\nOcurrió un error inesperado al ejecutar la tarea: {type(err).__name__}: {err}")
+
+
+def lista_de_tareas():
+    return ", ".join(str(n) for n in TAREAS)
 
 
 def menu():
@@ -338,7 +352,7 @@ def principal(argumentos):
             except ValueError:
                 numero = None
             if numero not in TAREAS:
-                print("Use: python ejecutar.py [número de tarea de 1 a 12]")
+                print(f"Use: python ejecutar.py [número de tarea: {lista_de_tareas()}]")
                 return 1
             ejecutar_tarea(numero)
             return 0
@@ -350,7 +364,7 @@ def principal(argumentos):
             if eleccion.isdigit() and int(eleccion) in TAREAS:
                 ejecutar_tarea(int(eleccion))
             elif eleccion:
-                print("Escriba un número de 1 a 12, o q para salir.")
+                print(f"Escriba un número de la lista ({lista_de_tareas()}), o q para salir.")
     except (KeyboardInterrupt, EOFError):
         print("\nSe canceló la ejecución.")
         return 0
