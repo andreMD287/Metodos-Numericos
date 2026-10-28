@@ -8,96 +8,189 @@ otro script.
 
 - Python 3.8 o superior. No se necesita instalar ninguna librería (solo se usa la
   biblioteca estándar).
-- Los comandos se ejecutan **desde esta carpeta**, porque algunas tareas importan a otras
-  (ver la tabla de dependencias).
+- Los comandos se ejecutan **desde esta carpeta** (abra una terminal en ella), porque algunas
+  tareas importan a otras (ver la tabla de dependencias).
+- En Windows, si `python` no se reconoce, use `py` en su lugar (`py tarea1_biseccion.py`).
+  Si los acentos o símbolos (≈) salen mal en la consola, use `python -X utf8 tarea1_biseccion.py`.
 
-## Ejecutar los ejemplos de cada tarea
+## Las tres formas de correr una tarea
+
+**1. Ejecutar los ejemplos que trae el archivo.** Cada archivo termina con un bloque
+`if __name__ == "__main__":` con ejemplos (casi todos tomados del cuaderno). Se corren así:
 
 ```bash
 python tarea1_biseccion.py
-python tarea2_punto_fijo.py
-python tarea3_regla_falsa.py
-python tarea4_newton_raphson.py
-python tarea5_secante.py
-python tarea6_sustitucion_hacia_atras.py
-python tarea7_lu.py
-python tarea8_sustitucion_hacia_adelante.py
-python tarea9_sistemas_lu.py
-python tarea10_lup.py
-python tarea11_gauss_seidel.py
-python tarea12_sumas_inferiores_superiores.py
 ```
 
-Si en Windows los acentos o símbolos (≈, ´) salen mal en la consola, use:
+**2. Cambiar el ejemplo por sus propios datos.** Abra el archivo, edite los datos dentro del
+bloque `if __name__ == "__main__":` del final y vuelva a ejecutarlo con el mismo comando.
+
+**3. Llamar la función desde otro script.** Cree un archivo (por ejemplo `prueba.py`) en esta
+misma carpeta, importe la función y ejecútelo con `python prueba.py`:
+
+```python
+from tarea1_biseccion import biseccion
+
+p = biseccion(lambda x: x**3 + 4 * x**2 - 10, 1, 2, eps=1e-6, M=50)
+print(p)
+```
+
+Todas las funciones imprimen el procedimiento paso a paso y devuelven el resultado, o `None` si
+el método fracasa o la entrada no es válida.
+
+## Resumen
+
+| Tarea | Tema | Archivo | Función principal | Depende de |
+|---|---|---|---|---|
+| 1 | Bisección | `tarea1_biseccion.py` | `biseccion(f, a, b, eps, M)` | - |
+| 2 | Punto fijo | `tarea2_punto_fijo.py` | `punto_fijo(p0, g, eps, M)` | - |
+| 3 | Regla falsa | `tarea3_regla_falsa.py` | `regla_falsa(f, a0, b0, eps, M)` | - |
+| 4 | Newton-Raphson | `tarea4_newton_raphson.py` | `newton_raphson(f, df, x0, eps, M)` | - |
+| 5 | Secante | `tarea5_secante.py` | `secante(f, x0, x1, eps, M)` | - |
+| 6 | Sustitución hacia atrás | `tarea6_sustitucion_hacia_atras.py` | `sustitucion_hacia_atras(n, A, b)` | - |
+| 7 | Factorización LU | `tarea7_lu.py` | `factorizacion_lu(A)` | - |
+| 8 | Sustitución hacia adelante | `tarea8_sustitucion_hacia_adelante.py` | `sustitucion_hacia_adelante(A, b)` | - |
+| 9 | Sistemas con LU | `tarea9_sistemas_lu.py` | `solucion_sistemas_lu(A, b)` | tareas 6, 7 y 8 |
+| 10 | Método LUP | `tarea10_lup.py` | `lup(A, b)` | tareas 7 y 9 (y por tanto 6 y 8) |
+| 11 | Gauss-Seidel | `tarea11_gauss_seidel.py` | `gauss_seidel(A, b, x0, eps, M)` | tarea 7 |
+| 12 | Sumas inferiores y superiores | `tarea12_sumas_inferiores_superiores.py` | `sumas_inferior_superior(f, a, b, n)` | - |
+
+Parámetros comunes: `f`, `g`, `df` son funciones de Python (por ejemplo `lambda x: x**2 - 2`),
+`eps` es la tolerancia y `M` es el número máximo de iteraciones. Las matrices son listas de
+listas y los vectores son listas.
+
+---
+
+## Tarea 1 - Bisección
+
+**Ejecutar el ejemplo** (problema del abrevadero):
 
 ```bash
-python -X utf8 tarea1_biseccion.py
+python tarea1_biseccion.py
 ```
 
-## Tareas
+**Con sus datos:**
 
-| Tarea | Archivo | Función principal | Depende de |
-|---|---|---|---|
-| 1 | `tarea1_biseccion.py` | `biseccion(f, a, b, eps, M)` | - |
-| 2 | `tarea2_punto_fijo.py` | `punto_fijo(p0, g, eps, M)` | - |
-| 3 | `tarea3_regla_falsa.py` | `regla_falsa(f, a0, b0, eps, M)` | - |
-| 4 | `tarea4_newton_raphson.py` | `newton_raphson(f, df, x0, eps, M)` | - |
-| 5 | `tarea5_secante.py` | `secante(f, x0, x1, eps, M)` | - |
-| 6 | `tarea6_sustitucion_hacia_atras.py` | `sustitucion_hacia_atras(n, A, b)` | - |
-| 7 | `tarea7_lu.py` | `factorizacion_lu(A)` | - |
-| 8 | `tarea8_sustitucion_hacia_adelante.py` | `sustitucion_hacia_adelante(A, b)` | - |
-| 9 | `tarea9_sistemas_lu.py` | `solucion_sistemas_lu(A, b)` | tareas 6, 7 y 8 |
-| 10 | `tarea10_lup.py` | `lup(A, b)` | tareas 7 y 9 (y por tanto 6 y 8) |
-| 11 | `tarea11_gauss_seidel.py` | `gauss_seidel(A, b, x0, eps, M)` | tarea 7 |
-| 12 | `tarea12_sumas_inferiores_superiores.py` | `sumas_inferior_superior(f, a, b, n)` | - |
+```python
+from tarea1_biseccion import biseccion
 
-Parámetros comunes: `f`, `g`, `df` son funciones de Python, `eps` es la tolerancia, `M` es el
-número máximo de iteraciones. Todas las funciones imprimen el procedimiento paso a paso y
-devuelven el resultado, o `None` si el método fracasa o la entrada no es válida.
+f = lambda x: x**3 + 4 * x**2 - 10
+p = biseccion(f, a=1, b=2, eps=1e-6, M=50)
+```
 
-## Uso con sus propios datos
+Requiere `f(a)` y `f(b)` con signos opuestos. Devuelve la aproximación `p` de la raíz, o
+`None` (con el mensaje de fracaso) si no se logra la tolerancia en `M` iteraciones.
 
-Cree un archivo (por ejemplo `prueba.py`) en esta misma carpeta, o abra `python` en ella.
+## Tarea 2 - Punto fijo
 
-### Tareas 1 a 5: búsqueda de raíces
+**Ejecutar el ejemplo** (`g(x) = x^3 - x` y `g(x) = cos(x)`):
+
+```bash
+python tarea2_punto_fijo.py
+```
+
+**Con sus datos:**
 
 ```python
 import math
-from tarea1_biseccion import biseccion
 from tarea2_punto_fijo import punto_fijo, cero_por_punto_fijo
+
+punto_fijo(1, math.cos, eps=1e-6, M=100)         # punto fijo de g(x) = cos(x), p0 = 1
+
+# Cero de una función f usando g(x) = x - f(x)
+cero_por_punto_fijo(1, lambda x: x - math.cos(x), 1e-6, 100)
+```
+
+Si la sucesión diverge o se sale del dominio de `g`, lo avisa y devuelve `None`.
+
+## Tarea 3 - Regla falsa (posición falsa)
+
+**Ejecutar el ejemplo** (`f(x) = x^3 + 4x^2 - 10` en `[1, 2]`):
+
+```bash
+python tarea3_regla_falsa.py
+```
+
+**Con sus datos:**
+
+```python
 from tarea3_regla_falsa import regla_falsa
+
+f = lambda x: x**3 + 4 * x**2 - 10
+regla_falsa(f, a0=1, b0=2, eps=1e-6, M=50)
+```
+
+Requiere `f(a0) f(b0) < 0`. El criterio de parada es el error relativo.
+
+## Tarea 4 - Newton-Raphson
+
+**Ejecutar el ejemplo:**
+
+```bash
+python tarea4_newton_raphson.py
+```
+
+**Con sus datos** (hay que dar también la derivada `df`):
+
+```python
 from tarea4_newton_raphson import newton_raphson
-from tarea5_secante import secante
 
 f = lambda x: x**3 + 4 * x**2 - 10
 df = lambda x: 3 * x**2 + 8 * x
-
-biseccion(f, 1, 2, eps=1e-6, M=50)                  # intervalo [a, b] con f(a) f(b) < 0
-punto_fijo(1, math.cos, eps=1e-6, M=100)            # punto fijo de g(x) = cos(x), p0 = 1
-cero_por_punto_fijo(1, lambda x: x - math.cos(x), 1e-6, 100)  # cero de f con g(x) = x - f(x)
-regla_falsa(f, 1, 2, eps=1e-6, M=50)                # criterio de parada: error relativo
-newton_raphson(f, df, x0=1, eps=1e-8, M=50)         # necesita la derivada f'
-secante(f, 1, 2, eps=1e-8, M=50)                    # dos puntos iniciales x0 y x1
+newton_raphson(f, df, x0=1, eps=1e-8, M=50)
 ```
 
-### Tareas 6 y 8: sistemas triangulares
+Avisa si la derivada escrita no coincide con una derivada numérica, y falla con un mensaje
+claro si `f'(x_n) = 0`.
+
+## Tarea 5 - Secante
+
+**Ejecutar el ejemplo:**
+
+```bash
+python tarea5_secante.py
+```
+
+**Con sus datos** (dos puntos iniciales distintos):
+
+```python
+from tarea5_secante import secante
+
+f = lambda x: x**3 + 4 * x**2 - 10
+secante(f, x0=1, x1=2, eps=1e-8, M=50)
+```
+
+## Tarea 6 - Sustitución hacia atrás
+
+**Ejecutar el ejemplo:**
+
+```bash
+python tarea6_sustitucion_hacia_atras.py
+```
+
+**Con sus datos** (`A` triangular superior, se indica el tamaño `n`):
 
 ```python
 from tarea6_sustitucion_hacia_atras import sustitucion_hacia_atras
-from tarea8_sustitucion_hacia_adelante import sustitucion_hacia_adelante
 
-# Triangular superior (hacia atrás): se indica el tamaño n
-sustitucion_hacia_atras(3, [[2, 1, -1], [0, 3, 2], [0, 0, 4]], [3, 12, 8])
-
-# Triangular inferior (hacia adelante)
-sustitucion_hacia_adelante([[1, 0, 0], [2, 1, 0], [-3, 3, 1]], [2, -2, 4])
+A = [[2, 1, -1],
+     [0, 3, 2],
+     [0, 0, 4]]
+x = sustitucion_hacia_atras(3, A, [3, 12, 8])
 ```
 
-La tarea 8 convierte los enteros a fracciones, así que el resultado sale exacto
-(por ejemplo `7/6` en lugar de `1.1666...`). En la tarea 6 puede obtener el mismo efecto
-escribiendo los datos como `Fraction(...)` (`from fractions import Fraction`).
+Si algún `a_ii = 0` dice que el sistema no tiene solución. Para resultados exactos escriba los
+datos como `Fraction(...)` (`from fractions import Fraction`).
 
-### Tarea 7: factorización LU
+## Tarea 7 - Factorización LU
+
+**Ejecutar el ejemplo** (la matriz del ejemplo tiene |A| = -1176):
+
+```bash
+python tarea7_lu.py
+```
+
+**Con sus datos:**
 
 ```python
 from tarea7_lu import factorizacion_lu
@@ -112,34 +205,86 @@ if resultado is not None:
     L, U = resultado
 ```
 
-Si algún `u_ii` es 0 durante la eliminación, imprime
-`No se pudo factorizar de la forma LU` y devuelve `None` (en ese caso use la tarea 10).
+Si algún `u_ii` es 0 durante la eliminación, imprime `No se pudo factorizar de la forma LU` y
+devuelve `None` (en ese caso use la tarea 10).
 
-### Tarea 9: sistemas con LU
+## Tarea 8 - Sustitución hacia adelante
+
+**Ejecutar el ejemplo del cuaderno** (resultado `x = (2, -6, 28, 79)`):
+
+```bash
+python tarea8_sustitucion_hacia_adelante.py
+```
+
+**Con sus datos** (`A` triangular inferior):
+
+```python
+from tarea8_sustitucion_hacia_adelante import sustitucion_hacia_adelante
+
+A = [[1, 0, 0],
+     [2, 1, 0],
+     [-3, 3, 1]]
+x = sustitucion_hacia_adelante(A, [2, -2, 4])
+```
+
+Los enteros se convierten a fracciones, así que el resultado sale exacto (por ejemplo `7/6` en
+lugar de `1.1666...`).
+
+## Tarea 9 - Sistemas con LU
+
+**Ejecutar el ejemplo:**
+
+```bash
+python tarea9_sistemas_lu.py
+```
+
+**Con sus datos** (resuelve `A x = b`):
 
 ```python
 from tarea9_sistemas_lu import solucion_sistemas_lu
 
-x = solucion_sistemas_lu(A, [16, 39, -10, -131])   # A de la tarea 7
+A = [[2, 1, 0, 3],
+     [4, 6, 1, 5],
+     [-6, 9, 6, -10],
+     [8, 24, -1, -46]]
+x = solucion_sistemas_lu(A, [16, 39, -10, -131])
 ```
 
 Si no se puede factorizar o la matriz es singular, imprime
 `No es posible hallar una solución única` y devuelve `None`.
 
-### Tarea 10: método LUP (con pivoteo parcial)
+## Tarea 10 - Método LUP (con pivoteo parcial)
+
+**Ejecutar el ejemplo:**
+
+```bash
+python tarea10_lup.py
+```
+
+**Con sus datos:**
 
 ```python
 from tarea10_lup import lup
 
-resultado = lup([[0, 2, 1], [1, 1, 1], [2, 1, 3]], [7, 6, 13])
+resultado = lup([[0, 2, 1],
+                 [1, 1, 1],
+                 [2, 1, 3]], [7, 6, 13])
 if resultado is not None:
     x, P, L, U = resultado           # P A = L U
 ```
 
-Funciona también cuando `a_11 = 0`, donde la tarea 9 falla. Imprime P, L, U, la
-verificación `P A = L U` y la solución.
+Funciona también cuando `a_11 = 0`, donde la tarea 9 falla. Imprime P, L, U, la verificación
+`P A = L U` y la solución.
 
-### Tarea 11: Gauss-Seidel
+## Tarea 11 - Gauss-Seidel
+
+**Ejecutar el ejemplo** (solución exacta `x = (1, 2, -1, 1)`):
+
+```bash
+python tarea11_gauss_seidel.py
+```
+
+**Con sus datos:**
 
 ```python
 from tarea11_gauss_seidel import gauss_seidel
@@ -150,28 +295,38 @@ A = [[10, -1, 2, 0],
      [0, 3, -1, 8]]
 b = [6, 25, -11, 15]
 
-x = gauss_seidel(A, b, x0=[0, 0, 0, 0], eps=1e-8, M=100)   # solución exacta (1, 2, -1, 1)
+x = gauss_seidel(A, b, x0=[0, 0, 0, 0], eps=1e-8, M=100)
 ```
 
-Se detiene cuando `||X - X0|| <= eps` (norma del máximo). Si no converge en `M` iteraciones,
-si hay un `a_ii = 0` o si los valores divergen, imprime el mensaje de fracaso y devuelve `None`.
+Se detiene cuando `||X - X0|| <= eps` (norma del máximo). Si no converge en `M` iteraciones, si
+hay un `a_ii = 0` o si los valores divergen, imprime el mensaje de fracaso y devuelve `None`.
 La convergencia está garantizada, por ejemplo, si `A` es diagonalmente dominante.
 
-Gauss-Seidel usa los valores ya actualizados de la misma iteración. La fórmula del
-cuaderno se lee con `X_j^0` para todos los `j`, lo que corresponde al método de Jacobi;
-para obtener esa versión use `gauss_seidel(..., usar_valores_anteriores=True)`.
+Gauss-Seidel usa los valores ya actualizados de la misma iteración. La fórmula del cuaderno se
+lee con `X_j^0` para todos los `j`, lo que corresponde al método de Jacobi; para obtener esa
+versión use `gauss_seidel(..., usar_valores_anteriores=True)`.
 
-### Tarea 12: sumas inferiores y superiores
+## Tarea 12 - Sumas inferiores y superiores
+
+**Ejecutar el ejemplo del cuaderno** (`x^2` en `[1, 5]`, `n = 8`, da `L = 35.5` y `U = 47.5`):
+
+```bash
+python tarea12_sumas_inferiores_superiores.py
+```
+
+**Con sus datos:**
 
 ```python
 from tarea12_sumas_inferiores_superiores import sumas_inferior_superior
 
-L, U = sumas_inferior_superior(lambda x: x**2, 1, 5, 8)   # L = 35.5, U = 47.5
+L, U = sumas_inferior_superior(lambda x: x**2, 1, 5, 8)
 ```
 
-Calcula `L` y `U` con `n` particiones del intervalo `[a, b]` (se requiere `a < b`). El
-mínimo y el máximo de cada subintervalo se toman entre sus dos extremos, así que
-`L <= integral <= U` se cumple cuando `f` es monótona en cada subintervalo; si no, aumente `n`.
+Calcula `L` y `U` con `n` particiones del intervalo `[a, b]` (se requiere `a < b`). El mínimo y
+el máximo de cada subintervalo se toman entre sus dos extremos, así que `L <= integral <= U` se
+cumple cuando `f` es monótona en cada subintervalo; si no, aumente `n`.
+
+---
 
 ## Notas
 
@@ -180,9 +335,9 @@ mínimo y el máximo de cada subintervalo se toman entre sus dos extremos, así 
   tamaño incorrecto, texto, `nan`, etc.) imprime un mensaje y devuelve `None`.
 - **Salida reducida:** en las tareas 7, 9, 10, 11 y 12 use `mostrar=False` para no imprimir el
   procedimiento, útil con matrices grandes. Por ejemplo `lup(A, b, mostrar=False)`.
-- **Enteros y fracciones:** en las tareas 7, 8, 9 y 10 los enteros se convierten a
-  `Fraction`, por lo que los resultados son exactos. Si se usan decimales (`float`) los
-  resultados son aproximados y el cero se compara de forma exacta, como en los algoritmos
-  del cuaderno (sin tolerancia).
+- **Enteros y fracciones:** en las tareas 7, 8, 9 y 10 los enteros se convierten a `Fraction`,
+  por lo que los resultados son exactos. Si se usan decimales (`float`) los resultados son
+  aproximados y el cero se compara de forma exacta, como en los algoritmos del cuaderno (sin
+  tolerancia).
 - **Tamaño:** probadas con matrices desde 1x1 hasta 300x300 (esta última tarda cerca de 1
   segundo con decimales).
