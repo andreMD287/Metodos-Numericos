@@ -102,6 +102,7 @@ el método fracasa o la entrada no es válida.
 | 10 | Método LUP | `tarea10_lup.py` | `lup(A, b)` | tareas 7 y 9 (y por tanto 6 y 8) |
 | 11 | Gauss-Seidel | `tarea11_gauss_seidel.py` | `gauss_seidel(A, b, x0, eps, M)` | tarea 7 |
 | 12 | Sumas inferiores y superiores | `tarea12_sumas_inferiores_superiores.py` | `sumas_inferior_superior(f, a, b, n)` | - |
+| 13 | Regla compuesta del trapecio | `tarea13_trapecio_compuesto.py` | `trapecio_compuesto(f, a, b, n)` | - |
 | 14 | Regla de Simpson compuesta | `tarea14_simpson_compuesto.py` | `simpson_compuesto(f, a, b, M)` | - |
 
 Parámetros comunes: `f`, `g`, `df` son funciones de Python (por ejemplo `lambda x: x**2 - 2`),
@@ -399,6 +400,29 @@ Calcula `L` y `U` con `n` particiones del intervalo `[a, b]` (se requiere `a < b
 el máximo de cada subintervalo se toman entre sus dos extremos, así que `L <= integral <= U` se
 cumple cuando `f` es monótona en cada subintervalo; si no, aumente `n`.
 
+## Tarea 13 - Regla compuesta del trapecio
+
+**Con los datos del profesor:** `python ejecutar.py 13` y escriba los datos cuando se los pida.
+
+**Ejecutar el ejemplo del cuaderno** (`e^(-x^2)` en `[0, 2]` con `n = 5`, da `T(h) = 0.8811`):
+
+```bash
+python tarea13_trapecio_compuesto.py
+```
+
+**Con sus datos:**
+
+```python
+import math
+from tarea13_trapecio_compuesto import trapecio_compuesto
+
+T = trapecio_compuesto(lambda x: math.exp(-x**2), 0, 2, n=5)    # n = número de subintervalos
+```
+
+`n` es el número de subintervalos (cualquier entero mayor o igual a 1). Calcula
+`T(h) = (h/2) S0 + h S1`, donde `S0 = f(a) + f(b)` y `S1` es la suma de `f(x_i)` para
+`i = 1, ..., n-1`. La regla es exacta para funciones lineales. Se requiere `a < b`.
+
 ## Tarea 14 - Regla de Simpson compuesta
 
 **Con los datos del profesor:** `python ejecutar.py 14` y escriba los datos cuando se los pida.
@@ -431,7 +455,7 @@ cuenta a mano usa solo 4 decimales); el valor exacto de la integral es `0.88208`
 - **Entradas válidas:** matrices como listas de listas (o tuplas) de números reales finitos:
   enteros, decimales o `Fraction`. Una entrada inválida (matriz no cuadrada, vector `b` de
   tamaño incorrecto, texto, `nan`, etc.) imprime un mensaje y devuelve `None`.
-- **Salida reducida:** en las tareas 7, 9, 10, 11, 12 y 14 use `mostrar=False` para no imprimir el
+- **Salida reducida:** en las tareas 7, 9, 10, 11, 12, 13 y 14 use `mostrar=False` para no imprimir el
   procedimiento, útil con matrices grandes. Por ejemplo `lup(A, b, mostrar=False)`.
 - **Enteros y fracciones:** en las tareas 7, 8, 9 y 10 los enteros se convierten a `Fraction`,
   por lo que los resultados son exactos. Si se usan decimales (`float`) los resultados son

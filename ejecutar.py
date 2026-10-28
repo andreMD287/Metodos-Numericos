@@ -33,6 +33,7 @@ from tarea9_sistemas_lu import solucion_sistemas_lu
 from tarea10_lup import lup
 from tarea11_gauss_seidel import gauss_seidel
 from tarea12_sumas_inferiores_superiores import sumas_inferior_superior
+from tarea13_trapecio_compuesto import trapecio_compuesto
 from tarea14_simpson_compuesto import simpson_compuesto
 
 # Nombres permitidos al interpretar lo que se escribe (funciones y constantes de math)
@@ -298,6 +299,14 @@ def tarea12():
     return sumas_inferior_superior(f, a, b, n, mostrar=n <= 50)
 
 
+def tarea13():
+    f = leer_funcion("f")
+    a, b = leer_numero("a"), leer_numero("b")
+    n = leer_entero("n (número de subintervalos)")
+    print()
+    return trapecio_compuesto(f, a, b, n, mostrar=n <= 50)
+
+
 def tarea14():
     f = leer_funcion("f")
     a, b = leer_numero("a"), leer_numero("b")
@@ -319,6 +328,7 @@ TAREAS = {
     10: ("Método LUP", tarea10),
     11: ("Gauss-Seidel", tarea11),
     12: ("Sumas inferiores y superiores", tarea12),
+    13: ("Regla compuesta del trapecio", tarea13),
     14: ("Regla de Simpson compuesta", tarea14),
 }
 
