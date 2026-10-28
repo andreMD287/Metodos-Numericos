@@ -13,20 +13,68 @@ otro script.
 - En Windows, si `python` no se reconoce, use `py` en su lugar (`py tarea1_biseccion.py`).
   Si los acentos o símbolos (≈) salen mal en la consola, use `python -X utf8 tarea1_biseccion.py`.
 
-## Las tres formas de correr una tarea
+## Correr una tarea con los datos que da el profesor
 
-**1. Ejecutar los ejemplos que trae el archivo.** Cada archivo termina con un bloque
-`if __name__ == "__main__":` con ejemplos (casi todos tomados del cuaderno). Se corren así:
+La forma más fácil es el ejecutor interactivo `ejecutar.py`: pregunta los datos por teclado y
+corre la tarea, sin tocar el código.
+
+```bash
+python ejecutar.py        # muestra el menú: escriba el número de la tarea (q para salir)
+python ejecutar.py 4      # va directo a la tarea 4
+```
+
+Responda lo que le pregunta. Ejemplo con la tarea 4 (Newton-Raphson); lo que usted escribe es
+lo que va después del `=`:
+
+```text
+f(x) = x^3 + 4x^2 - 10
+f'(x) = 3x^2 + 8x
+x0 (valor inicial) = 1
+eps (tolerancia) = 1e-8
+M (máximo de iteraciones) = 50
+```
+
+Ejemplo con la tarea 9 (sistema `A x = b` con LU): la matriz se escribe una fila por línea y
+se termina con una línea vacía; luego se escribe el vector `b`:
+
+```text
+Matriz A: una fila por línea (números separados por espacios o comas).
+  A[1] = 2 1 0 3
+  A[2] = 4 6 1 5
+  A[3] = -6 9 6 -10
+  A[4] = 8 24 -1 -46
+  A[5] =                                   <- línea vacía para terminar
+b (números separados por espacios o comas) = 16 39 -10 -131
+```
+
+**Cómo escribir los datos:**
+
+| Dato | Cómo escribirlo | Ejemplos |
+|---|---|---|
+| Función | en términos de `x`; vale `^` o `**` para potencias, `4x` o `4*x`, y un `f(x)=` al inicio | `x^3 + 4x^2 - 10`, `cos(x) - x`, `e^x - 2`, `(x+1)(x-1)` |
+| Funciones disponibles | las de `math`: `sin`, `cos`, `tan`, `exp`, `log` (o `ln`), `sqrt`, `atan`, `abs`, ... y las constantes `pi`, `e` | `sqrt(x) - 1`, `sin(2x)` |
+| Número | decimales con **punto** (no coma); se aceptan `1e-6`, `pi/2`, `3/4` | `0.001`, `1e-6`, `pi/4` |
+| Vector | una línea con los números separados por espacios o comas | `16 39 -10 -131` |
+| Matriz | una fila por línea y una línea vacía al final; también se acepta `[[2,1],[4,5]]` o `2 1; 4 5` en una sola línea | `2 1 0 3` |
+| Fracciones | sin espacios; en matrices y vectores se conservan exactas | `3/4`, `-1/2` |
+
+Si un dato está mal escrito, el programa lo dice y vuelve a preguntarlo. Con matrices de más
+de 12 x 12 muestra solo el resultado, sin los pasos. Para cancelar use `Ctrl+C`.
+
+## Otras formas de correr una tarea
+
+**Ejecutar los ejemplos que trae el archivo.** Cada archivo termina con un bloque
+`if __name__ == "__main__":` con ejemplos (casi todos tomados del cuaderno):
 
 ```bash
 python tarea1_biseccion.py
 ```
 
-**2. Cambiar el ejemplo por sus propios datos.** Abra el archivo, edite los datos dentro del
-bloque `if __name__ == "__main__":` del final y vuelva a ejecutarlo con el mismo comando.
+**Cambiar el ejemplo por sus datos.** Abra el archivo, edite los datos dentro del bloque
+`if __name__ == "__main__":` del final y vuelva a ejecutarlo con el mismo comando.
 
-**3. Llamar la función desde otro script.** Cree un archivo (por ejemplo `prueba.py`) en esta
-misma carpeta, importe la función y ejecútelo con `python prueba.py`:
+**Llamar la función desde un script.** Cree un archivo (por ejemplo `prueba.py`) en esta misma
+carpeta, importe la función y ejecútelo con `python prueba.py`:
 
 ```python
 from tarea1_biseccion import biseccion
@@ -63,6 +111,8 @@ listas y los vectores son listas.
 
 ## Tarea 1 - Bisección
 
+**Con los datos del profesor:** `python ejecutar.py 1` y escriba los datos cuando se los pida.
+
 **Ejecutar el ejemplo** (problema del abrevadero):
 
 ```bash
@@ -82,6 +132,8 @@ Requiere `f(a)` y `f(b)` con signos opuestos. Devuelve la aproximación `p` de l
 `None` (con el mensaje de fracaso) si no se logra la tolerancia en `M` iteraciones.
 
 ## Tarea 2 - Punto fijo
+
+**Con los datos del profesor:** `python ejecutar.py 2` y escriba los datos cuando se los pida.
 
 **Ejecutar el ejemplo** (`g(x) = x^3 - x` y `g(x) = cos(x)`):
 
@@ -105,6 +157,8 @@ Si la sucesión diverge o se sale del dominio de `g`, lo avisa y devuelve `None`
 
 ## Tarea 3 - Regla falsa (posición falsa)
 
+**Con los datos del profesor:** `python ejecutar.py 3` y escriba los datos cuando se los pida.
+
 **Ejecutar el ejemplo** (`f(x) = x^3 + 4x^2 - 10` en `[1, 2]`):
 
 ```bash
@@ -123,6 +177,8 @@ regla_falsa(f, a0=1, b0=2, eps=1e-6, M=50)
 Requiere `f(a0) f(b0) < 0`. El criterio de parada es el error relativo.
 
 ## Tarea 4 - Newton-Raphson
+
+**Con los datos del profesor:** `python ejecutar.py 4` y escriba los datos cuando se los pida.
 
 **Ejecutar el ejemplo:**
 
@@ -145,6 +201,8 @@ claro si `f'(x_n) = 0`.
 
 ## Tarea 5 - Secante
 
+**Con los datos del profesor:** `python ejecutar.py 5` y escriba los datos cuando se los pida.
+
 **Ejecutar el ejemplo:**
 
 ```bash
@@ -161,6 +219,8 @@ secante(f, x0=1, x1=2, eps=1e-8, M=50)
 ```
 
 ## Tarea 6 - Sustitución hacia atrás
+
+**Con los datos del profesor:** `python ejecutar.py 6` y escriba los datos cuando se los pida.
 
 **Ejecutar el ejemplo:**
 
@@ -183,6 +243,8 @@ Si algún `a_ii = 0` dice que el sistema no tiene solución. Para resultados exa
 datos como `Fraction(...)` (`from fractions import Fraction`).
 
 ## Tarea 7 - Factorización LU
+
+**Con los datos del profesor:** `python ejecutar.py 7` y escriba los datos cuando se los pida.
 
 **Ejecutar el ejemplo** (la matriz del ejemplo tiene |A| = -1176):
 
@@ -210,6 +272,8 @@ devuelve `None` (en ese caso use la tarea 10).
 
 ## Tarea 8 - Sustitución hacia adelante
 
+**Con los datos del profesor:** `python ejecutar.py 8` y escriba los datos cuando se los pida.
+
 **Ejecutar el ejemplo del cuaderno** (resultado `x = (2, -6, 28, 79)`):
 
 ```bash
@@ -231,6 +295,8 @@ Los enteros se convierten a fracciones, así que el resultado sale exacto (por e
 lugar de `1.1666...`).
 
 ## Tarea 9 - Sistemas con LU
+
+**Con los datos del profesor:** `python ejecutar.py 9` y escriba los datos cuando se los pida.
 
 **Ejecutar el ejemplo:**
 
@@ -255,6 +321,8 @@ Si no se puede factorizar o la matriz es singular, imprime
 
 ## Tarea 10 - Método LUP (con pivoteo parcial)
 
+**Con los datos del profesor:** `python ejecutar.py 10` y escriba los datos cuando se los pida.
+
 **Ejecutar el ejemplo:**
 
 ```bash
@@ -277,6 +345,8 @@ Funciona también cuando `a_11 = 0`, donde la tarea 9 falla. Imprime P, L, U, la
 `P A = L U` y la solución.
 
 ## Tarea 11 - Gauss-Seidel
+
+**Con los datos del profesor:** `python ejecutar.py 11` y escriba los datos cuando se los pida.
 
 **Ejecutar el ejemplo** (solución exacta `x = (1, 2, -1, 1)`):
 
@@ -307,6 +377,8 @@ lee con `X_j^0` para todos los `j`, lo que corresponde al método de Jacobi; par
 versión use `gauss_seidel(..., usar_valores_anteriores=True)`.
 
 ## Tarea 12 - Sumas inferiores y superiores
+
+**Con los datos del profesor:** `python ejecutar.py 12` y escriba los datos cuando se los pida.
 
 **Ejecutar el ejemplo del cuaderno** (`x^2` en `[1, 5]`, `n = 8`, da `L = 35.5` y `U = 47.5`):
 
