@@ -19,16 +19,21 @@ Iteraciones:
     Si n = M, entonces Salida (Fracaso). PARE
 """
 import math
+import numbers
 
 
 def evaluar(func, x, nombre):
     """Evalúa func(x) y verifica que el resultado sea un número real finito."""
     try:
         y = func(x)
-    except (ValueError, OverflowError, ZeroDivisionError) as err:
+    except (ValueError, OverflowError, ZeroDivisionError, TypeError) as err:
         raise ValueError(f"no se pudo evaluar {nombre}({x}): {err}")
-    if isinstance(y, complex) or not math.isfinite(y):
-        raise ValueError(f"{nombre}({x}) = {y} no es un número real finito")
+    try:
+        valido = isinstance(y, numbers.Real) and not isinstance(y, bool) and math.isfinite(y)
+    except OverflowError:                    # entero demasiado grande para un float
+        valido = False
+    if not valido:
+        raise ValueError(f"{nombre}({x}) = {y!r} no es un número real finito")
     return y
 
 

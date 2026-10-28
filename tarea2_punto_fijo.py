@@ -22,6 +22,7 @@ OJO: sirve para
     2) Cero de una función f, usando g(x) = x - f(x)
 """
 import math
+import numbers
 
 
 def punto_fijo(p0, g, eps, M):
@@ -40,13 +41,18 @@ def punto_fijo(p0, g, eps, M):
         # x_{n+1} = g(x_n), protegido contra errores de dominio y desbordamiento
         try:
             x_n1 = g(x_n)
-        except (ValueError, OverflowError, ZeroDivisionError) as err:
+        except (ValueError, OverflowError, ZeroDivisionError, TypeError) as err:
             print(f"\nEn la iteración {n + 1} no se pudo evaluar g({x_n}): {err}.")
             print(f"Después de {n} iteración(es) no se logró la precisión deseada "
                   "(la sucesión se salió del dominio de g o diverge).")
             return None
 
-        if isinstance(x_n1, complex) or not math.isfinite(x_n1):
+        try:
+            real_finito = (isinstance(x_n1, numbers.Real) and not isinstance(x_n1, bool)
+                           and math.isfinite(x_n1))
+        except OverflowError:                # entero demasiado grande para un float
+            real_finito = False
+        if not real_finito:
             print(f"{n:>3} {x_n:>20.10g} {str(x_n1):>20}")
             print(f"\nEn la iteración {n + 1} g(x_n) dio un valor no real o infinito.")
             print(f"Después de {n + 1} iteración(es) no se logró la precisión deseada "

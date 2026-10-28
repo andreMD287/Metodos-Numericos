@@ -20,16 +20,21 @@ Iteraciones:
 Nota: el uso de e_{n+1} como criterio de detención no obedece a algún motivo en particular.
 """
 import math
+import numbers
 
 
 def evaluar(f, x):
     """Evalúa f(x) y verifica que el resultado sea un número real finito."""
     try:
         y = f(x)
-    except (ValueError, OverflowError, ZeroDivisionError) as err:
+    except (ValueError, OverflowError, ZeroDivisionError, TypeError) as err:
         raise ValueError(f"no se pudo evaluar f({x}): {err}")
-    if isinstance(y, complex) or not math.isfinite(y):
-        raise ValueError(f"f({x}) = {y} no es un número real finito")
+    try:
+        valido = isinstance(y, numbers.Real) and not isinstance(y, bool) and math.isfinite(y)
+    except OverflowError:                    # entero demasiado grande para un float
+        valido = False
+    if not valido:
+        raise ValueError(f"f({x}) = {y!r} no es un número real finito")
     return y
 
 
