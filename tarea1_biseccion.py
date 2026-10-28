@@ -11,6 +11,22 @@ Salida:
     Fracaso: "No se encontró una raíz a la función con la tolerancia deseada y número de iteraciones"
 """
 import math
+import numbers
+
+
+def evaluar(f, x):
+    """Evalúa f(x) y verifica que el resultado sea un número real finito."""
+    try:
+        y = f(x)
+    except (ValueError, OverflowError, ZeroDivisionError, TypeError) as err:
+        raise ValueError(f"no se pudo evaluar f({x}): {err}")
+    try:
+        valido = isinstance(y, numbers.Real) and not isinstance(y, bool) and math.isfinite(y)
+    except OverflowError:                    # entero demasiado grande para un float
+        valido = False
+    if not valido:
+        raise ValueError(f"f({x}) = {y!r} no es un número real finito")
+    return y
 
 
 def signo(x):
@@ -31,8 +47,12 @@ def biseccion(f, a, b, eps, M):
     if a > b:
         a, b = b, a                  # se ordena el intervalo
 
-    fa = f(a)
-    fb = f(b)
+    try:
+        fa = evaluar(f, a)
+        fb = evaluar(f, b)
+    except ValueError as err:
+        print(f"Error en los extremos del intervalo: {err}.")
+        return None
 
     # Si un extremo ya es raíz, se devuelve directamente
     if fa == 0:
@@ -52,7 +72,11 @@ def biseccion(f, a, b, eps, M):
     i = 1
     while i <= M:
         p = a + (b - a) / 2          # punto medio
-        fp = f(p)
+        try:
+            fp = evaluar(f, p)
+        except ValueError as err:
+            print(f"\nError en la iteración i = {i}: {err}.")
+            return None
         error = (b - a) / 2
 
         print(f"{i:>3} {a:>12.6f} {b:>12.6f} {p:>12.6f} {fp:>14.6e} {error:>12.6f}")
